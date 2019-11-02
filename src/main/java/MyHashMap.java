@@ -1,52 +1,67 @@
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 
 public class MyHashMap {
 
-    public static int LENGTH = Integer.MAX_VALUE/100;
+    public int LENGTH = 10;
     private int size = 0;
     private Node[] entry = new Node[LENGTH];
 
 
     public void put(Object key, Object value) {
-        if (containsKey(key) != null) throw new IllegalArgumentException();
+
+        if (containsKey(key)) throw new IllegalArgumentException();
 
         Node currentNode = entry[indexFor(key)];
-        entry[indexFor(key)] = new Node(key, value, currentNode);
+        Node node = new Node(key, value, currentNode);
+        entry[indexFor(key)] = node;
         size++;
     }
 
     public void update(Object key, Object value) {
-        Node node = containsKey(key);
+        Node node = get(key);
         if (node != null)
             node.value = value;
         else throw new NoSuchElementException();
     }
 
-    public Object getValue(Object key) {
-        if (containsKey(key) == null) throw new NoSuchElementException();
-        return entry[indexFor(key)].value;
+    public Node get(Object key) {
+        Node node = entry[indexFor(key)];
+        while (node != null) {
+            if (node.key != key)
+                node = node.next;
+            else break;
+        }
+        return node;
     }
 
 
-    public Node containsKey(Object key) {
-        int hash = indexFor(key);
-        Node node = entry[hash];
-        if (node == null)
-            return null;
-        while (node != null) {
-            if (node.key.equals(key))
-                return node;
-            node = node.next;
-        }
-        return null;
+    public boolean containsKey(Object key) {
+        return get(key) != null;
     }
 
     public void remove(Object key) {
-        Node node = containsKey(key);
-        if (node == null) throw new NoSuchElementException();
-        node = null;
-        size--;
+
+        if (get(key) == null) throw new NoSuchElementException();
+
+        int hash = indexFor(key);
+        Node node = entry[hash];
+        if (node == null) return;
+        Node prev_entry = null;
+        while (node != null) {
+            if (node.key.equals(key)) {
+                Object value = entry[hash].value;
+                if (prev_entry != null)
+                    prev_entry.next = node.next;
+                else
+                    entry[hash] = null;
+                size--;
+                return;
+            }
+            prev_entry = node;
+            node = node.next;
+        }
     }
 
 
@@ -56,12 +71,17 @@ public class MyHashMap {
 
     private int indexFor(Object key) {
         return key == null ? 0 : Math.abs(key.hashCode()) % LENGTH;
+    }
+
+    public Object getValue(Object key) {
+        Node node = get(key);
+        if (node == null) throw new NoSuchElementException();
+
+        return node.value;
 
     }
 
-
-
-    class Node {
+    static class Node {
 
         private Object key;
         private Object value;
@@ -72,7 +92,6 @@ public class MyHashMap {
             this.value = value;
             this.next = node;
         }
-
     }
 }
 

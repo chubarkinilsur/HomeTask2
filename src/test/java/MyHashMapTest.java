@@ -18,12 +18,12 @@ class MyHashMapTest {
     void put() {
         MyHashMap map = new MyHashMap();
         map.put("key1", "value1");
-        map.put("key2", "value2");
-        map.put("key3", "value3");
+        map.put(1L, "value2");
+        map.put(0x00000000L, "value3");
         assertEquals(3, map.getSize());
         assertEquals("value1", map.getValue("key1"));
-        assertEquals("value2", map.getValue("key2"));
-        assertEquals("value3", map.getValue("key3"));
+        assertEquals("value2", map.getValue(1L));
+        assertEquals("value3", map.getValue(0x00000000L));
 
 
     }
@@ -32,8 +32,8 @@ class MyHashMapTest {
     void remove() {
         MyHashMap map = new MyHashMap();
         map.put("key1", "value1");
-        map.put("key2", "value2");
-        map.put("key3", "value3");
+        map.put(1L, "value2");
+        map.put(0x00000000L, "value3");
         assertEquals(3, map.getSize());
         map.remove("key1");
         assertEquals(2, map.getSize());
@@ -54,10 +54,10 @@ class MyHashMapTest {
     void containsKey() {
         MyHashMap map = new MyHashMap();
         map.put("key1", "value1");
-        map.put("key2", "value2");
-        map.put("key3", "value3");
-        assertNotNull(map.containsKey("key1"));
-        assertNull(map.containsKey("key"));
+        map.put(0x00000000L, "value2");
+        map.put(1L, "value3");
+        assertTrue(map.containsKey(0x00000000L));
+        assertFalse(map.containsKey("key"));
     }
 
     @Test

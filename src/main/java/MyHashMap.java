@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class MyHashMap {
 
-    public int LENGTH = 10;
+    public int LENGTH = Integer.MAX_VALUE/1000;
     private int size = 0;
     private Node[] entry = new Node[LENGTH];
 

@@ -72,18 +72,18 @@ public class MyHashMap {
 
         int hash = indexFor(key);
         Node node = entry[hash];
-        Node prev_entry = null;
+        Node prevEntry = null;
         while (node != null) {
             if (node.key.equals(key)) {
-                if (prev_entry != null)
-                    prev_entry.next = node.next;
+                if (prevEntry != null)
+                    prevEntry.next = node.next;
                 else if (node.next == null)
                     entry[hash] = null;
                 else entry[hash] = node.next;
                 size--;
                 return;
             }
-            prev_entry = node;
+            prevEntry = node;
             node = node.next;
         }
     }

@@ -1,22 +1,23 @@
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 /**
  * MyHashMap.class домашнее задание №2
- * @author  Чубаркин Ильсур
+ *
+ * @author Чубаркин Ильсур
  */
 public class MyHashMap {
     /**
      * Размер мапы постоянный, не динамический
      */
-    public static final int LENGTH = Integer.MAX_VALUE / 1000;
+    private static final int LENGTH = Integer.MAX_VALUE / 1000;
     private int size = 0;
     private Node[] entry = new Node[LENGTH];
 
     /**
      * Добавить новый элеменет в мапу ключ key, значение value. Если уже существует такой ключ key, выбрасываю исключение IllegalArgumentException
-     * @param key
-     * @param value
+     *
+     * @param key   ключ, может быть null
+     * @param value значение, может быть null
      */
     public void put(Object key, Object value) {
 
@@ -31,31 +32,33 @@ public class MyHashMap {
 
     /**
      * Изменить значение по ключу key на value, при отсутствии ключа key  выбрасываю исключение NoSuchElementException
-     * @param key
-     * @param value
+     *
+     * @param key   может быть null
+     * @param value может быть null
      */
     public void update(Object key, Object value) {
         Node node = get(key);
-        if (node != null)
+        if (node != null) {
             node.value = value;
-        else throw new NoSuchElementException();
+        } else throw new NoSuchElementException("There is no such key " + key);
     }
 
 
     private Node get(Object key) {
         Node node = entry[indexFor(key)];
         while (node != null) {
-            if (node.key != key)
+            if (node.key != key) {
                 node = node.next;
-            else break;
+            } else break;
         }
         return node;
     }
 
     /**
-     * Проверка сущетвует ли в таблице ключ key.
-     * @param key
-     * @return boolean
+     * Проверка сущетвует ли в таблице запись с ключем = key.
+     *
+     * @param key может быть null
+     * @return boolean true есть запись существует, false если такой записи нет.
      */
     public boolean containsKey(Object key) {
         return get(key) != null;
@@ -64,22 +67,25 @@ public class MyHashMap {
     /**
      * Удалить из таблицы запись с ключем key. При отсутствии записи с ключем key
      * выбрасываю исключение NoSuchElementException
-     * @param key
+     *
+     * @param key может быть null
      */
     public void remove(Object key) {
 
-        if (get(key) == null) throw new NoSuchElementException();
+        if (get(key) == null) throw new NoSuchElementException("There is no such key " + key);
 
         int hash = indexFor(key);
         Node node = entry[hash];
         Node prevEntry = null;
         while (node != null) {
             if (node.key.equals(key)) {
-                if (prevEntry != null)
+                if (prevEntry != null) {
                     prevEntry.next = node.next;
-                else if (node.next == null)
+                } else if (node.next == null) {
                     entry[hash] = null;
-                else entry[hash] = node.next;
+                } else {
+                    entry[hash] = node.next;
+                }
                 size--;
                 return;
             }
@@ -90,7 +96,8 @@ public class MyHashMap {
 
     /**
      * Палучить количество записей в таблице.
-     * @return int
+     *
+     * @return int больше или равен 0.
      */
     public int getSize() {
         return size;
@@ -103,12 +110,13 @@ public class MyHashMap {
     /**
      * Получить значение value типа Object по ключу key. При отсутствии в таблице записи с ключем key,
      * выбрасываю исключение NoSuchElementException
-     * @param key
-     * @return  Object
+     *
+     * @param key параметр ключ, может быть null
+     * @return Object может быть null
      */
     public Object getValue(Object key) {
         Node node = get(key);
-        if (node == null) throw new NoSuchElementException();
+        if (node == null) throw new NoSuchElementException("There is no such key " + key);
         return node.value;
     }
 

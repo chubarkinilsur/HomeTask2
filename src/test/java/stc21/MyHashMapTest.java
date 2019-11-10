@@ -1,5 +1,8 @@
+package stc21;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import stc21.MyHashMap;
 
 import java.util.NoSuchElementException;
 
@@ -8,13 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MyHashMapTest {
 
 
-    @BeforeEach
-    void setUp() {
-
-
-    }
-
-    @org.junit.jupiter.api.Test
+    @Test
     void put() {
         MyHashMap map = new MyHashMap();
         map.put("key1", "value1");

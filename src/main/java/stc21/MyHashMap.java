@@ -1,7 +1,9 @@
+package stc21;
+
 import java.util.NoSuchElementException;
 
 /**
- * MyHashMap.class домашнее задание №2
+ * stc21.MyHashMap.class домашнее задание №2
  *
  * @author Чубаркин Ильсур
  */
@@ -21,9 +23,9 @@ public class MyHashMap {
      */
     public void put(Object key, Object value) {
 
-        if (containsKey(key))
-            throw new IllegalArgumentException("There is a such key " + key + " in MyHashMap. Use update method.");
-
+        if (containsKey(key)) {
+            throw new IllegalArgumentException("There is a such key " + key + " in stc21.MyHashMap. Use update method.");
+        }
         Node currentNode = entry[indexFor(key)];
         Node node = new Node(key, value, currentNode);
         entry[indexFor(key)] = node;
@@ -49,7 +51,9 @@ public class MyHashMap {
         while (node != null) {
             if (node.key != key) {
                 node = node.next;
-            } else break;
+            } else {
+                break;
+            }
         }
         return node;
     }
